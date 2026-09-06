@@ -3,33 +3,27 @@ import Show from "../models/Show.js";
 import Booking from "../models/Booking.js";
 import { getRazorpay } from "../config/razorpay.js";
 
-// Calculate price based on seat row
-const getSeatPrice = (seat, basePrice) => {
+// Calculate price based on the theater's seat layout
+const getSeatPrice = (seat, basePrice, seatLayout) => {
   const row = seat.charAt(0).toUpperCase();
 
-  // Recliner
-  if (["A", "B"].includes(row)) {
-    return basePrice * 3;
-  }
+  const rowConfig = seatLayout.find(
+    (item) => String(item.row).toUpperCase() === row
+  );
 
-  // Premium
-  if (["C", "D"].includes(row)) {
-    return basePrice * 2;
-  }
+  const multiplier = Number(rowConfig?.multiplier || 1);
 
-  // Standard
-  if (["E", "F"].includes(row)) {
-    return basePrice * 1.5;
-  }
-
-  // Economy
-  return basePrice;
+  return basePrice * multiplier;
 };
 
 // Calculate complete booking amount
-const calculateTotalAmount = (selectedSeats, basePrice) => {
+const calculateTotalAmount = (
+  selectedSeats,
+  basePrice,
+  seatLayout
+) => {
   return selectedSeats.reduce((total, seat) => {
-    return total + getSeatPrice(seat, basePrice);
+    return total + getSeatPrice(seat, basePrice, seatLayout);
   }, 0);
 };
 
@@ -88,8 +82,10 @@ export const createBooking = async (req, res) => {
       });
     }
 
-    // Get show details
-    const showData = await Show.findById(showId).populate("movie");
+    // Get show details with movie and theater
+    const showData = await Show.findById(showId)
+      .populate("movie")
+      .populate("theater");
 
     if (!showData) {
       return res.json({
@@ -98,10 +94,21 @@ export const createBooking = async (req, res) => {
       });
     }
 
-    // Calculate price according to seat category
+    // Get theater seat layout
+    const seatLayout = showData.theater?.seatLayout || [];
+
+    if (seatLayout.length === 0) {
+      return res.json({
+        success: false,
+        message: "This theater does not have a configured seat layout.",
+      });
+    }
+
+    // Calculate price using theater seat categories
     const amount = calculateTotalAmount(
       uniqueSeats,
-      showData.showPrice
+      showData.showPrice,
+      seatLayout
     );
 
     // Create pending booking
