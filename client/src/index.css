@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+
+@theme{
+    --color-primary: #F84565;
+    --color-primary-dull: #D63854;
+}
+
+:root {
+    --surface: #09090b;
+    --surface-raised: #121217;
+    --surface-soft: rgba(255, 255, 255, 0.07);
+    --text: #fafafa;
+    --text-muted: #a1a1aa;
+    --text-soft: #d4d4d8;
+    --line: rgba(255, 255, 255, 0.12);
+    --accent-glow: rgba(248, 69, 101, 0.16);
+}
+
+:root[data-theme="light"] {
+    --surface: #f7f7f5;
+    --surface-raised: #ffffff;
+    --surface-soft: rgba(20, 24, 32, 0.06);
+    --text: #17171b;
+    --text-muted: #62626b;
+    --text-soft: #42424b;
+    --line: rgba(20, 24, 32, 0.13);
+    --accent-glow: rgba(248, 69, 101, 0.11);
+}
+
+*{
+    font-family: 'Outfit', sans-serif;
+    scrollbar-width: thin;
+    scrollbar-color: #787777 var(--surface);
+    box-sizing: border-box;
+}
+body{
+    background: var(--surface);
+    background-image: radial-gradient(circle at 75% 0%, var(--accent-glow), transparent 30rem);
+    color: var(--text);
+    transition: background-color 240ms ease, color 240ms ease;
+}
+input ::-webkit-outer-spin-button,
+input ::-webkit-inner-spin-button{
+    -webkit-animation: none;
+}
+::-webkit-calendar-picker-indicator{
+    filter:invert(1);
+}
+
+:root[data-theme="light"] ::-webkit-calendar-picker-indicator { filter: none; }
+
+.site-nav {
+    background: linear-gradient(to bottom, rgba(9, 9, 11, 0.78), transparent);
+}
+
+:root[data-theme="light"] .site-nav {
+    background: linear-gradient(to bottom, rgba(247, 247, 245, 0.9), transparent);
+}
+
+.nav-menu-surface { background: rgba(255, 255, 255, 0.08); }
+:root[data-theme="light"] .nav-menu-surface { background: rgba(255, 255, 255, 0.82); }
+
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--text);
+    background: var(--surface-soft);
+    cursor: pointer;
+    transition: transform 180ms ease, background 180ms ease, color 180ms ease;
+}
+
+.theme-toggle:hover { transform: translateY(-1px) rotate(8deg); background: var(--accent-glow); color: #f84565; }
+
+:root[data-theme="light"] .text-white { color: var(--text); }
+:root[data-theme="light"] .text-gray-300 { color: var(--text-soft); }
+:root[data-theme="light"] .text-gray-400,
+:root[data-theme="light"] .text-gray-500 { color: var(--text-muted); }
+:root[data-theme="light"] .border-gray-800,
+:root[data-theme="light"] .border-gray-700\/40 { border-color: var(--line); }
+:root[data-theme="light"] .bg-black { background-color: #17171b; }
+
+/* ---------- Animations ---------- */
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to   { opacity: 1; transform: scale(1); }
+}
+@keyframes shimmer {
+    from { background-position: -200% 0; }
+    to   { background-position: 200% 0; }
+}
+@keyframes pulseSoft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+.animate-fadeInUp { animation: fadeInUp 0.5s ease-out both; }
+.animate-fadeIn { animation: fadeIn 0.4s ease-out both; }
+.animate-scaleIn { animation: scaleIn 0.3s ease-out both; }
+.animate-pulseSoft { animation: pulseSoft 1.6s ease-in-out infinite; }
+
+.animate-shimmer {
+    background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.10) 37%, rgba(255,255,255,0.04) 63%);
+    background-size: 400% 100%;
+    animation: shimmer 1.4s ease-in-out infinite;
+}
+
+/* stagger helper — pair with inline style="animation-delay: Nms" or these preset classes */
+.delay-1 { animation-delay: 0.05s; }
+.delay-2 { animation-delay: 0.1s; }
+.delay-3 { animation-delay: 0.15s; }
+.delay-4 { animation-delay: 0.2s; }
+.delay-5 { animation-delay: 0.25s; }
+.delay-6 { animation-delay: 0.3s; }
+.delay-7 { animation-delay: 0.35s; }
+.delay-8 { animation-delay: 0.4s; }

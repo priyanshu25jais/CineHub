@@ -1,0 +1,13 @@
+<svg width="145" height="32" viewBox="0 0 145 32" xmlns="http://www.w3.org/2000/svg">
+  <text x="0" y="23"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="25"
+        font-weight="700"
+        fill="#ff3f81">C</text>
+
+  <text x="19" y="23"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="25"
+        font-weight="700"
+        fill="white">ineHub</text>
+</svg>
